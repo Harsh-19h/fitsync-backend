@@ -3,6 +3,7 @@ package com.project.fitness.model;
 import jakarta.persistence.*;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "users")
@@ -12,11 +13,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Name cannot be empty")
     private String name;
 
+    @NotBlank(message = "Email cannot be empty")
+    @Email(message = "Invalid email format")
     @Column(unique = true)
     private String email;
 
+    @NotBlank(message = "password cannot be empty")
+    @Size(min = 4, message = "Password must be at least 4 characters")
     private String password;
 
     public Long getId(){

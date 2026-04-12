@@ -2,6 +2,7 @@ package com.project.fitness.controller;
 
 import com.project.fitness.model.User;
 import com.project.fitness.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user){
+    public User createUser( @Valid @RequestBody User user){
         return userService.saveUser(user);
     }
 
