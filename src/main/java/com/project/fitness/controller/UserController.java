@@ -4,6 +4,7 @@ import com.project.fitness.model.User;
 import com.project.fitness.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
+import com.project.fitness.dto.UserDTO;
 
 import java.util.List;
 
@@ -18,17 +19,17 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser( @Valid @RequestBody User user){
+    public UserDTO createUser( @Valid @RequestBody User user) {
         return userService.saveUser(user);
     }
 
     @GetMapping
-    public List<User> getAllUsers(){
+    public List<UserDTO> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id){
+    public UserDTO getUser(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
