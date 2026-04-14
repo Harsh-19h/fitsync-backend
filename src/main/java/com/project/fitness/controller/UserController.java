@@ -1,5 +1,7 @@
 package com.project.fitness.controller;
 
+import com.project.fitness.dto.AuthResponse;
+import com.project.fitness.dto.LoginRequest;
 import com.project.fitness.model.User;
 import com.project.fitness.service.UserService;
 import jakarta.validation.Valid;
@@ -21,6 +23,11 @@ public class UserController {
     @PostMapping
     public UserDTO createUser( @Valid @RequestBody User user) {
         return userService.saveUser(user);
+    }
+
+    @PostMapping("/login")
+    public AuthResponse login(@RequestBody LoginRequest request){
+        return userService.loginUser(request.getEmail(),request.getPassword());
     }
 
     @GetMapping
