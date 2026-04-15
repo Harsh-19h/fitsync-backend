@@ -61,6 +61,19 @@ public class UserService {
         );
     }
 
+    public UserDTO getUserByEmail(String email){
+        User user = userRepository.findByEmail(email);
+
+        if(user == null){
+            throw new RuntimeException("User not found");
+        }
+
+        return new UserDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail()
+        );
+    }
     public void deleteUser(Long id){
 
         userRepository.deleteById(id);

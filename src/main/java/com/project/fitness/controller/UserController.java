@@ -4,6 +4,7 @@ import com.project.fitness.dto.AuthResponse;
 import com.project.fitness.dto.LoginRequest;
 import com.project.fitness.model.User;
 import com.project.fitness.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import com.project.fitness.dto.UserDTO;
@@ -35,6 +36,11 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @GetMapping("/me")
+    public UserDTO getLoggedInUser(HttpServletRequest request){
+        String email = (String) request.getAttribute("email");
+        return userService.getUserByEmail(email);
+    }
     @GetMapping("/{id}")
     public UserDTO getUser(@PathVariable Long id) {
         return userService.getUserById(id);
