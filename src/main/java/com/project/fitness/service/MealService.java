@@ -67,4 +67,35 @@ public class MealService {
                 ))
                 .collect(Collectors.toList());
     }
+
+    public MealDTO updateMeal(Long id, Meal updatedMeal, String email) {
+
+        Meal existing = mealRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Meal not found"));
+
+        if (!existing.getUser().getEmail().equals(email)) {
+            throw new RuntimeException("Unauthorized");
+        }
+
+        existing.setMealName(updatedMeal.getMealName());
+        existing.setCalories(updatedMeal.getCalories());
+        existing.setProtein(updatedMeal.getProtein());
+        existing.setCarbs(updatedMeal.getCarbs());
+        existing.setFats(updatedMeal.getFats());
+        existing.setMealType(updatedMeal.getMealType());
+        existing.setMealDate(updatedMeal.getMealDate());
+
+        Meal saved = mealRepository.save(existing);
+
+        return new MealDTO(
+                saved.getId(),
+                saved.getMealName(),
+                saved.getCalories(),
+                saved.getProtein(),
+                saved.getCarbs(),
+                saved.getFats(),
+                saved.getMealType(),
+                saved.getMealDate()
+        );
+    }
 }

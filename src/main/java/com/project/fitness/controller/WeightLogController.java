@@ -34,4 +34,14 @@ public class WeightLogController {
 
         return weightLogService.getMyWeightLogs(email);
     }
+
+    @PutMapping("/{id}")
+    public WeightLogDTO updateWeightLog(@PathVariable Long id,
+                                        @RequestBody WeightLog weightLog,
+                                        HttpServletRequest request) {
+
+        String email = (String) request.getAttribute("email");
+
+        return weightLogService.updateWeightLog(id, weightLog, email);
+    }
 }

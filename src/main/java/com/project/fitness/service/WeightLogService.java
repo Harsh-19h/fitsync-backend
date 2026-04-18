@@ -42,7 +42,6 @@ public class WeightLogService {
         );
     }
 
-
     public List<WeightLogDTO> getMyWeightLogs(String email) {
 
         User user = userRepository.findByEmail(email);
@@ -59,5 +58,26 @@ public class WeightLogService {
                         w.getLogDate()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    public WeightLogDTO updateWeightLog(Long id, WeightLog updatedLog, String email) {
+
+        WeightLog existing = weightLogRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Weight log not found"));
+
+        if (!existing.getUser().getEmail().equals(email)) {
+            throw new RuntimeException("Unauthorized");
+        }
+
+        existing.setWeight(updatedLog.getWeight());
+        existing.setLogDate(updatedLog.getLogDate());
+
+        WeightLog saved = weightLogRepository.save(existing);
+
+        return new WeightLogDTO(
+                saved.getId(),
+                saved.getWeight(),
+                saved.getLogDate()
+        );
     }
 }

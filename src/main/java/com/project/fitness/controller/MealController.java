@@ -35,4 +35,14 @@ public class MealController {
 
         return mealService.getMyMeals(email);
     }
+
+    @PutMapping("/{id}")
+    public MealDTO updateMeal(@PathVariable Long id,
+                              @RequestBody Meal meal,
+                              HttpServletRequest request) {
+
+        String email = (String) request.getAttribute("email");
+
+        return mealService.updateMeal(id, meal, email);
+    }
 }

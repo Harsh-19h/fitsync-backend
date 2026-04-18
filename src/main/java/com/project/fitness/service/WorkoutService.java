@@ -59,4 +59,27 @@ public class WorkoutService {
                 ))
                 .collect(Collectors.toList());
     }
+
+    public WorkoutDTO updateWorkout(Long id, Workout updatedWorkout, String email) {
+
+        Workout existing = workoutRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Workout not found"));
+
+        if (!existing.getUser().getEmail().equals(email)) {
+            throw new RuntimeException("Unauthorized");
+        }
+
+        existing.setTitle(updatedWorkout.getTitle());
+        existing.setWorkoutDate(updatedWorkout.getWorkoutDate());
+        existing.setDurationInMinutes(updatedWorkout.getDurationInMinutes());
+
+        Workout saved = workoutRepository.save(existing);
+
+        return new WorkoutDTO(
+                saved.getId(),
+                saved.getTitle(),
+                saved.getWorkoutDate(),
+                saved.getDurationInMinutes()
+        );
+    }
 }

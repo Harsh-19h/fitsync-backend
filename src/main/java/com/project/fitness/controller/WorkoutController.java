@@ -33,4 +33,14 @@ public class WorkoutController {
 
         return workoutService.getMyWorkouts(email);
     }
+
+    @PutMapping("/{id}")
+    public WorkoutDTO updateWorkout(@PathVariable Long id,
+                                    @RequestBody Workout workout,
+                                    HttpServletRequest request) {
+
+        String email = (String) request.getAttribute("email");
+
+        return workoutService.updateWorkout(id, workout, email);
+    }
 }
