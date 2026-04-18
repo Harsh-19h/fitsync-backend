@@ -44,4 +44,14 @@ public class WeightLogController {
 
         return weightLogService.updateWeightLog(id, weightLog, email);
     }
+
+    @GetMapping("/paginated")
+    public List<WeightLogDTO> getMyWeightLogsPaginated(
+            @RequestParam int page,
+            @RequestParam int size,
+            HttpServletRequest request) {
+        String email = (String) request.getAttribute("email");
+
+        return weightLogService.getMyWeightLogsPaginated(email,page,size);
+    }
 }

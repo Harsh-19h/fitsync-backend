@@ -45,4 +45,15 @@ public class MealController {
 
         return mealService.updateMeal(id, meal, email);
     }
+
+    @GetMapping("/paginated")
+    public List<MealDTO> getMyMealsPaginated(
+            @RequestParam int page,
+            @RequestParam int size,
+            HttpServletRequest request) {
+
+        String email = (String) request.getAttribute("email");
+
+        return mealService.getMyMealsPaginated(email, page, size);
+    }
 }

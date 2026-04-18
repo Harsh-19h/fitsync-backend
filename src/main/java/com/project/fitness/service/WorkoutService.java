@@ -6,6 +6,10 @@ import com.project.fitness.model.Workout;
 import com.project.fitness.repository.UserRepository;
 import com.project.fitness.repository.WorkoutRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -81,5 +85,26 @@ public class WorkoutService {
                 saved.getWorkoutDate(),
                 saved.getDurationInMinutes()
         );
+    }
+
+    public List<WorkoutDTO> getMyWorkoutsPaginated(String email, int page, int size) {
+
+        User user = userRepository.findByEmail(email);
+
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        return workoutRepository.findByUser(user, pageable)
+                .stream()
+                .map(w -> new WorkoutDTO(
+                        w.getId(),
+                        w.getTitle(),
+                        w.getWorkoutDate(),
+                        w.getDurationInMinutes()
+                ))
+                .toList();
     }
 }

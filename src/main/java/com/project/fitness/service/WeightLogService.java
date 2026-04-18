@@ -6,6 +6,8 @@ import com.project.fitness.model.WeightLog;
 import com.project.fitness.repository.UserRepository;
 import com.project.fitness.repository.WeightLogRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,5 +81,24 @@ public class WeightLogService {
                 saved.getWeight(),
                 saved.getLogDate()
         );
+    }
+
+    public List<WeightLogDTO> getMyWeightLogsPaginated(String email, int page, int size){
+
+        User user = userRepository.findByEmail(email);
+
+        if(user==null){
+            throw new RuntimeException("User not found");
+        }
+        Pageable pageable = PageRequest.of(page,size);
+
+        return weightLogRepository.findByUser(user, pageable)
+                .stream()
+                .map(w-> new WeightLogDTO(
+                        w.getId(),
+                        w.getWeight(),
+                        w.getLogDate()
+                ))
+                .toList();
     }
 }

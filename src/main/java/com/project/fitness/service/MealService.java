@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 @Service
 public class MealService {
 
@@ -97,5 +101,30 @@ public class MealService {
                 saved.getMealType(),
                 saved.getMealDate()
         );
+    }
+
+    public List<MealDTO> getMyMealsPaginated(String email, int page, int size) {
+
+        User user = userRepository.findByEmail(email);
+
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        return mealRepository.findByUser(user, pageable)
+                .stream()
+                .map(m -> new MealDTO(
+                        m.getId(),
+                        m.getMealName(),
+                        m.getCalories(),
+                        m.getProtein(),
+                        m.getCarbs(),
+                        m.getFats(),
+                        m.getMealType(),
+                        m.getMealDate()
+                ))
+                .toList();
     }
 }

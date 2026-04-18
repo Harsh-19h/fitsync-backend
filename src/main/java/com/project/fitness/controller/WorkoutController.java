@@ -43,4 +43,15 @@ public class WorkoutController {
 
         return workoutService.updateWorkout(id, workout, email);
     }
+
+    @GetMapping("/paginated")
+    public List<WorkoutDTO> getMyWorkoutsPaginated(
+            @RequestParam int page,
+            @RequestParam int size,
+            HttpServletRequest request) {
+
+        String email = (String) request.getAttribute("email");
+
+        return workoutService.getMyWorkoutsPaginated(email, page, size);
+    }
 }
